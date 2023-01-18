@@ -75,8 +75,10 @@ func formatInt(number int) string {
 func compareTestSuites(testSuiteOld []byte, testSuiteNew []byte) map[string]TestSuiteDiff {
 	var testSuiteNewXML TestSuitesXML
 	var testSuiteOldXML TestSuitesXML
-	xml.Unmarshal(testSuiteNew, &testSuiteNewXML)
-	xml.Unmarshal(testSuiteOld, &testSuiteOldXML)
+	err := xml.Unmarshal(testSuiteNew, &testSuiteNewXML)
+	checkError(err)
+	err = xml.Unmarshal(testSuiteOld, &testSuiteOldXML)
+	checkError(err)
 	testSuiteTimesOld, testSuiteTestsOld, testSuiteSkippedOld,
 		testSuiteFailuresOld, testSuiteErrorsOld := getTestSuitesTime(testSuiteOldXML)
 	testSuiteTimesNew, testSuiteTestsNew, testSuiteSkippedNew,
