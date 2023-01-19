@@ -31,8 +31,8 @@ type TestSuite struct {
 }
 
 type TestSuiteDiff struct {
-	SuiteStatus  string // existing, new or old
-	TimeDiff     string // time difference between old and new XML
+	SuiteStatus  string
+	TimeDiff     string
 	TestsDiff    string
 	SkippedDiff  string
 	FailuresDiff string
@@ -105,7 +105,7 @@ func compareTestSuites(testSuiteOld []byte, testSuiteNew []byte) map[string]Test
 			oldTimeFloat, err := strconv.ParseFloat(oldTime, 32)
 			checkError(err)
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
-				"EXISTING",
+				"",
 				formatFloat(float32(newTimeFloat - oldTimeFloat)),
 				formatInt(newTests - testSuiteTestsOld[testSuiteName]),
 				formatInt(newSkipped - testSuiteSkippedOld[testSuiteName]),
@@ -115,7 +115,7 @@ func compareTestSuites(testSuiteOld []byte, testSuiteNew []byte) map[string]Test
 		} else {
 			// Test suite name exists only in new XML.
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
-				"NEW",
+				"➕",
 				formatFloat(float32(newTimeFloat)),
 				formatInt(newTests),
 				formatInt(newSkipped),
@@ -133,7 +133,7 @@ func compareTestSuites(testSuiteOld []byte, testSuiteNew []byte) map[string]Test
 			checkError(err)
 			// Test suite name exists only in old XML.
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
-				"REMOVED",
+				"➖",
 				formatFloat(-1 * float32(oldTimeFloat)),
 				formatInt(-1 * testSuiteTestsOld[testSuiteName]),
 				formatInt(-1 * testSuiteSkippedOld[testSuiteName]),
