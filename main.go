@@ -243,19 +243,19 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 }
 
 const mdtemplate = `
-|Test Suite|Status|±Time|±Tests|±Skipped|±Failures|±Errors|
+|Test suite|Status|±Time|±Tests|±Skipped|±Failures|±Errors|
 |----|----|----|-----|-------|--------|------|
 {{- range $key, $value := .SuiteDiff }}
 |{{ $key }}|{{ .SuiteStatus }}|{{ .TimeDiff }}|{{ .TestsDiff }}|{{ .SkippedDiff }}|{{ .FailuresDiff }}|{{ .ErrorsDiff }}|
 {{- end}}
 
 <details>
-  <summary>Click me</summary>
+  <summary>Additional test case details</summary>
 
-|Test Suite|Class|Test Name|Status|±Time|
-|----|----|----|----|----|
+|Test suite|Test case|Status|±Time|
+|----|----|----|----|
 {{- range $key, $value := .CaseDiff }}
-|{{ .SuiteName }}|{{ .ClassName }}|{{ .TestCaseName }}|{{ .TestCaseStatus }}|{{ .TimeDiff }}|
+|{{ .SuiteName }}|{{ .TestCaseName }}|{{ .TestCaseStatus }}|{{ .TimeDiff }}|
 {{- end}}
 </details>
 `
