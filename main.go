@@ -30,6 +30,12 @@ type TestSuite struct {
 	Errors   int      `xml:"errors,attr"`
 }
 
+type TestCase struct {
+	XMLName xml.Name `xml:"testcase"`
+	Time    string   `xml:"time,attr"`
+	Name    string   `xml:"name,attr"`
+}
+
 type TestSuiteDiff struct {
 	SuiteStatus  string
 	TimeDiff     string
@@ -54,6 +60,16 @@ func getTestSuitesTime(testSuiteXML TestSuitesXML) (map[string]string, map[strin
 		testSuiteErrors[v.Name] = v.Errors
 	}
 	return testSuiteTimes, testSuiteTests, testSuiteSkipped, testSuiteFailures, testSuiteErrors
+}
+
+func getTestCaseTime(testSuiteXML TestSuitesXML) (map[string]string, map[string]string) {
+	testSuiteTimes := make(map[string]string)
+	testSuiteTestCases := make(map[string]string)
+	for _, v := range testSuiteXML.TestSuites {
+		testSuiteTimes[v.Name] = v.Time
+		testSuiteTestCases[v.Name] = v.Tests
+	}
+	return testSuiteTimes, testSuiteTestCases
 }
 
 func formatFloat(number float32) string {
@@ -146,7 +162,7 @@ func compareTestSuites(testSuiteOld []byte, testSuiteNew []byte) map[string]Test
 }
 
 const mdtemplate = `
-|Name|Status|Time|Tests|Skipped|Failures|Errors|
+|Test Name|Status|±Time|±Tests|±Skipped|±Failures|±Errors|
 |----|------|----|-----|-------|--------|------|
 {{- range $key, $value := .}}
 |{{ $key }}|{{ $value.SuiteStatus }}|{{ $value.TimeDiff }}|{{ $value.TestsDiff }}|{{ $value.SkippedDiff }}|{{ $value.FailuresDiff }}|{{ $value.ErrorsDiff }}|
