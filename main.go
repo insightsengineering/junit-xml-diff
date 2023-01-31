@@ -6,8 +6,12 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"strings"
 	"text/template"
 )
+
+var positiveThreshold float32
+var negativeThreshold float32
 
 func checkError(err error) {
 	if err != nil {
@@ -39,12 +43,13 @@ type TestCase struct {
 }
 
 type TestSuiteDiff struct {
-	SuiteStatus  string
-	TimeDiff     string
-	TestsDiff    string
-	SkippedDiff  string
-	FailuresDiff string
-	ErrorsDiff   string
+	SuiteStatus    string
+	TimeDiff       string
+	TestsDiff      string
+	SkippedDiff    string
+	FailuresDiff   string
+	ErrorsDiff     string
+	TimeDiffBranch string
 }
 
 type TestCaseTime struct {
@@ -60,11 +65,13 @@ type TestCaseDiff struct {
 	TestCaseName   string
 	ClassName      string
 	SuiteName      string
+	TimeDiffBranch string
 }
 
 type TestReport struct {
-	SuiteDiff map[string]TestSuiteDiff
-	CaseDiff  map[string]TestCaseDiff
+	SuiteDiff  map[string]TestSuiteDiff
+	CaseDiff   map[string]TestCaseDiff
+	DiffBranch string
 }
 
 func getTestSuites(testSuiteXML TestSuitesXML) (map[string]string, map[string]int,
@@ -113,12 +120,24 @@ func getTestCases(testSuiteXML TestSuitesXML) map[string]TestCaseTime {
 	return testCaseTimes
 }
 
-func formatFloat(number float32) string {
+func formatFloat(number float32, addPlusSign bool, roundToThreshold bool) string {
+	if number > -1*negativeThreshold && number < positiveThreshold && roundToThreshold {
+		return ""
+	}
 	var plusSign string
-	if number > 0 {
+	if number > 0 && addPlusSign {
 		plusSign = "+"
 	}
-	return fmt.Sprintf("%s%.3f", plusSign, number)
+	return fmt.Sprintf("$%s%.3f$", plusSign, number)
+}
+
+func getDiffEmoji(formattedTime string) string {
+	if strings.HasPrefix(formattedTime, "$+") {
+		return "💔"
+	} else if strings.HasPrefix(formattedTime, "$-") {
+		return "💚"
+	}
+	return ""
 }
 
 func formatInt(number int) string {
@@ -139,21 +158,24 @@ func compareTestCases(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) ma
 		_, ok := testCaseTimesOld[k]
 		if ok {
 			// Test case exists both in old and new XML.
+			formattedTimeDiff := formatFloat(testCaseTimesNew[k].Time-testCaseTimesOld[k].Time, true, true)
 			testCaseTimeDiff[k] = TestCaseDiff{
-				"",
-				formatFloat(testCaseTimesNew[k].Time - testCaseTimesOld[k].Time),
+				getDiffEmoji(formattedTimeDiff),
+				formattedTimeDiff,
 				testCaseTimesNew[k].TestCaseName,
 				testCaseTimesNew[k].ClassName,
 				testCaseTimesNew[k].SuiteName,
+				formatFloat(testCaseTimesOld[k].Time, false, false),
 			}
 		} else {
 			// Test case exists only in new XML.
 			testCaseTimeDiff[k] = TestCaseDiff{
-				"$+$",
-				formatFloat(testCaseTimesNew[k].Time),
+				"👶",
+				formatFloat(testCaseTimesNew[k].Time, true, true),
 				testCaseTimesNew[k].TestCaseName,
 				testCaseTimesNew[k].ClassName,
 				testCaseTimesNew[k].SuiteName,
+				"",
 			}
 		}
 	}
@@ -163,11 +185,12 @@ func compareTestCases(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) ma
 		if !ok {
 			// Test case exists only in old XML.
 			testCaseTimeDiff[k] = TestCaseDiff{
-				"$-$",
-				formatFloat(testCaseTimesOld[k].Time),
+				"💀",
+				formatFloat(testCaseTimesOld[k].Time, true, true),
 				testCaseTimesOld[k].TestCaseName,
 				testCaseTimesOld[k].ClassName,
 				testCaseTimesOld[k].SuiteName,
+				formatFloat(testCaseTimesOld[k].Time, false, false),
 			}
 		}
 	}
@@ -201,23 +224,26 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 			oldTime := testSuiteTimesOld[testSuiteName]
 			oldTimeFloat, err := strconv.ParseFloat(oldTime, 32)
 			checkError(err)
+			formattedTimeDiff := formatFloat(float32(newTimeFloat-oldTimeFloat), true, true)
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
-				"",
-				formatFloat(float32(newTimeFloat - oldTimeFloat)),
+				getDiffEmoji(formattedTimeDiff),
+				formattedTimeDiff,
 				formatInt(newTests - testSuiteTestsOld[testSuiteName]),
 				formatInt(newSkipped - testSuiteSkippedOld[testSuiteName]),
 				formatInt(newFailures - testSuiteFailuresOld[testSuiteName]),
 				formatInt(newErrors - testSuiteErrorsOld[testSuiteName]),
+				formatFloat(float32(oldTimeFloat), false, false),
 			}
 		} else {
 			// Test suite name exists only in new XML.
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
-				"$+$",
-				formatFloat(float32(newTimeFloat)),
+				"👶",
+				formatFloat(float32(newTimeFloat), true, true),
 				formatInt(newTests),
 				formatInt(newSkipped),
 				formatInt(newFailures),
 				formatInt(newErrors),
+				"",
 			}
 		}
 	}
@@ -230,19 +256,20 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 			checkError(err)
 			// Test suite name exists only in old XML.
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
-				"$-$",
-				formatFloat(-1 * float32(oldTimeFloat)),
+				"💀",
+				formatFloat(-1*float32(oldTimeFloat), true, true),
 				formatInt(-1 * testSuiteTestsOld[testSuiteName]),
 				formatInt(-1 * testSuiteSkippedOld[testSuiteName]),
 				formatInt(-1 * testSuiteFailuresOld[testSuiteName]),
 				formatInt(-1 * testSuiteErrorsOld[testSuiteName]),
+				formatFloat(float32(oldTimeFloat), false, false),
 			}
 		}
 	}
 	return testSuiteDiff
 }
 
-func compareXMLReports(fileOld, fileNew, fileOut string) {
+func compareXMLReports(fileOld, fileNew, fileOut, branch string) {
 	xmlFileOld, err := os.Open(fileOld)
 	checkError(err)
 	xmlFileNew, err := os.Open(fileNew)
@@ -267,9 +294,11 @@ func compareXMLReports(fileOld, fileNew, fileOut string) {
 	var testReport TestReport
 	testReport.SuiteDiff = testSuiteDiff
 	testReport.CaseDiff = testCasesDiff
+	testReport.DiffBranch = branch
 
 	var markdownTemplate string
 	if len(testSuiteDiff) > 20 {
+		// If there are more than 20 test suites, markdown table with test suites should be collapsible.
 		markdownTemplate = longTestSuiteTemplatePrefix + testSuiteTemplate + longTestSuiteTemplateSuffix + testCaseTemplate
 	} else {
 		markdownTemplate = testSuiteTemplate + testCaseTemplate
@@ -294,10 +323,10 @@ const longTestSuiteTemplateSuffix = `
 `
 
 const testSuiteTemplate = `
-| Test Suite | $Status$ | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
-|:----:|:----:|:----:|:-----:|:-------:|:--------:|:------:|
+| Test Suite | $Status$ | Time for ` + "`" + `{{ .DiffBranch }}` + "`" + ` | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
+|:-----|:----:|:----:|:-----:|:-------:|:--------:|:------:|:------:|
 {{- range $key, $value := .SuiteDiff }}
-| {{ $key }} | {{ .SuiteStatus }} | ${{ .TimeDiff }}$ | ${{ .TestsDiff }}$ | ${{ .SkippedDiff }}$ | ${{ .FailuresDiff }}$ | ${{ .ErrorsDiff }}$ |
+| {{ $key }} | {{ .SuiteStatus }} | {{ .TimeDiffBranch }} | {{ .TimeDiff }} | ${{ .TestsDiff }}$ | ${{ .SkippedDiff }}$ | ${{ .FailuresDiff }}$ | ${{ .ErrorsDiff }}$ |
 {{- end}}
 `
 
@@ -305,18 +334,29 @@ const testCaseTemplate = `
 <details>
   <summary><b>Additional test case details</b></summary>
 
-| Test Suite | $Status$ | $±Time$ | Test Case |
-|:----:|:----:|:----:|:-----|
+| Test Suite | $Status$ | Time for ` + "`" + `{{ .DiffBranch }}` + "`" + ` | $±Time$ | Test Case |
+|:-----|:----:|:----:|:----:|:-----|
 {{- range $key, $value := .CaseDiff }}
-| {{ .SuiteName }} | {{ .TestCaseStatus }} | ${{ .TimeDiff }}$ | {{ .TestCaseName }} |
+| {{ .SuiteName }} | {{ .TestCaseStatus }} | {{ .TimeDiffBranch }} | {{ .TimeDiff }} | {{ .TestCaseName }} |
 {{- end}}
 </details>
 `
 
 func main() {
 	if len(os.Args) < 3 {
-		fmt.Printf("Usage: %s <old-xml-file-name> <new-xml-file-name> <output-file-name>\n", os.Args[0])
+		// <branch-name-for-old-xml> is typically main
+		// if time difference is between 0 and <positive-threshold> it's treated as 0
+		// if time difference is between <negative-threshold> and 0 it's treated as 0
+		fmt.Printf("Usage: %s <old-xml-file-name> <new-xml-file-name> <output-file-name> <branch-name-for-old-xml> <positive-threshold> <negative-threshold>\n", os.Args[0])
 		os.Exit(1)
 	}
-	compareXMLReports(os.Args[1], os.Args[2], os.Args[3])
+
+	positiveThreshold64, err := strconv.ParseFloat(os.Args[5], 32)
+	checkError(err)
+	positiveThreshold = float32(positiveThreshold64)
+	negativeThreshold64, err := strconv.ParseFloat(os.Args[6], 32)
+	checkError(err)
+	negativeThreshold = float32(negativeThreshold64)
+
+	compareXMLReports(os.Args[1], os.Args[2], os.Args[3], os.Args[4])
 }

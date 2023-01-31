@@ -7,7 +7,7 @@
     <testcase time="0.55" classname="testsuite1" name="testcase3"/>
   </testsuite>
   <testsuite name="testsuite2" timestamp="2023-01-19T16:20:10Z" hostname="e3ab08c8a5fd" tests="4" skipped="0" failures="3" errors="0" time="2.25">
-    <testcase time="0.15" classname="testsuite2" name="testcase4"/>
+    <testcase time="5.15" classname="testsuite2" name="testcase4"/>
     <testcase time="0.05" classname="testsuite2" name="testcase5"/>
     <testcase time="0.05" classname="testsuite2" name="testcase5"/>
     <testcase time="0.08" classname="testsuite2" name="testcase6"/>
