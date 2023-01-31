@@ -242,7 +242,7 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 	return testSuiteDiff
 }
 
-func compareXMLReports(fileOld, fileNew string) {
+func compareXMLReports(fileOld, fileNew, fileOut string) {
 	xmlFileOld, err := os.Open(fileOld)
 	checkError(err)
 	xmlFileNew, err := os.Open(fileNew)
@@ -270,7 +270,10 @@ func compareXMLReports(fileOld, fileNew string) {
 
 	tmpl, err := template.New("md").Parse(mdtemplate)
 	checkError(err)
-	err = tmpl.Execute(os.Stdout, testReport)
+	outputFile, err := os.Create(fileOut)
+	checkError(err)
+	defer outputFile.Close()
+	err = tmpl.Execute(outputFile, testReport)
 	checkError(err)
 }
 
@@ -294,8 +297,8 @@ const mdtemplate = `
 
 func main() {
 	if len(os.Args) < 3 {
-		fmt.Printf("Usage: %s <old-xml-file-name> <new-xml-file-name>\n", os.Args[0])
+		fmt.Printf("Usage: %s <old-xml-file-name> <new-xml-file-name> <output-file-name>\n", os.Args[0])
 		os.Exit(1)
 	}
-	compareXMLReports(os.Args[1], os.Args[2])
+	compareXMLReports(os.Args[1], os.Args[2], os.Args[3])
 }
