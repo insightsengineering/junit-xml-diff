@@ -10,29 +10,29 @@ import (
 const expectedResult = `
 | Test Suite | $Status$ | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
 |:----:|:----:|:----:|:-----:|:-------:|:--------:|:------:|
-| $testsuite1$ | $ $ | $+0.300$ | $+2$ | $+2$ | $0$ | $-2$ |
-| $testsuite2$ | $ $ | $0.000$ | $-1$ | $+2$ | $-2$ | $0$ |
-| $testsuite3$ | $ ➖$ | $-3.250$ | $-4$ | $0$ | $-3$ | $0$ |
-| $testsuite5$ | $ ➕$ | $+7.158$ | $+3$ | $0$ | $0$ | $+1$ |
+| testsuite1 |  | $+0.300$ | $+2$ | $+2$ | $0$ | $-2$ |
+| testsuite2 |  | $0.000$ | $-1$ | $+2$ | $-2$ | $0$ |
+| testsuite3 | $-$ | $-3.250$ | $-4$ | $0$ | $-3$ | $0$ |
+| testsuite5 | $+$ | $+7.158$ | $+3$ | $0$ | $0$ | $+1$ |
 
 <details>
   <summary><b>Additional test case details</b></summary>
 
-| Test Case | $Status$ | $±Time$ | Test Suite |
-|:----:|:----:|:----:|:----:|
-| testcase1 | $ $ | $+5.960$ | testsuite1 |
-| testcase2 | $ $ | $0.000$ | testsuite1 |
-| testcase3 | $ $ | $0.000$ | testsuite1 |
-| testcase3a | $ ➕$ | $+0.550$ | testsuite1 |
-| testcase3b | $ ➕$ | $+0.550$ | testsuite1 |
-| testcase4 | $ $ | $-0.100$ | testsuite2 |
-| testcase5 | $ $ | $+2.000$ | testsuite2 |
-| testcase6 | $ ➖$ | $+0.080$ | testsuite2 |
-| testcase40 | $ ➖$ | $+0.250$ | testsuite3 |
-| testcase50 | $ ➖$ | $+0.800$ | testsuite3 |
-| testcase60 | $ ➖$ | $+0.580$ | testsuite3 |
-| testcase400 | $ ➕$ | $+1.150$ | testsuite5 |
-| testcase500 | $ ➕$ | $+5.111$ | testsuite5 |
+| Test Suite | $Status$ | $±Time$ | Test Case |
+|:----:|:----:|:----:|:-----|
+| testsuite1 |  | $+5.960$ | testcase1 |
+| testsuite1 |  | $0.000$ | testcase2 |
+| testsuite1 |  | $0.000$ | testcase3 |
+| testsuite1 | $+$ | $+0.550$ | testcase3a |
+| testsuite1 | $+$ | $+0.550$ | testcase3b |
+| testsuite2 |  | $-0.100$ | testcase4 |
+| testsuite2 |  | $+2.000$ | testcase5 |
+| testsuite2 | $-$ | $+0.080$ | testcase6 |
+| testsuite3 | $-$ | $+0.250$ | testcase40 |
+| testsuite3 | $-$ | $+0.800$ | testcase50 |
+| testsuite3 | $-$ | $+0.580$ | testcase60 |
+| testsuite5 | $+$ | $+1.150$ | testcase400 |
+| testsuite5 | $+$ | $+5.111$ | testcase500 |
 </details>
 `
 

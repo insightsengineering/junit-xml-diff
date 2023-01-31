@@ -149,7 +149,7 @@ func compareTestCases(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) ma
 		} else {
 			// Test case exists only in new XML.
 			testCaseTimeDiff[k] = TestCaseDiff{
-				"➕",
+				"$+$",
 				formatFloat(testCaseTimesNew[k].Time),
 				testCaseTimesNew[k].TestCaseName,
 				testCaseTimesNew[k].ClassName,
@@ -163,7 +163,7 @@ func compareTestCases(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) ma
 		if !ok {
 			// Test case exists only in old XML.
 			testCaseTimeDiff[k] = TestCaseDiff{
-				"➖",
+				"$-$",
 				formatFloat(testCaseTimesOld[k].Time),
 				testCaseTimesOld[k].TestCaseName,
 				testCaseTimesOld[k].ClassName,
@@ -212,7 +212,7 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 		} else {
 			// Test suite name exists only in new XML.
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
-				"➕",
+				"$+$",
 				formatFloat(float32(newTimeFloat)),
 				formatInt(newTests),
 				formatInt(newSkipped),
@@ -230,7 +230,7 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 			checkError(err)
 			// Test suite name exists only in old XML.
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
-				"➖",
+				"$-$",
 				formatFloat(-1 * float32(oldTimeFloat)),
 				formatInt(-1 * testSuiteTestsOld[testSuiteName]),
 				formatInt(-1 * testSuiteSkippedOld[testSuiteName]),
@@ -268,7 +268,14 @@ func compareXMLReports(fileOld, fileNew, fileOut string) {
 	testReport.SuiteDiff = testSuiteDiff
 	testReport.CaseDiff = testCasesDiff
 
-	tmpl, err := template.New("md").Parse(mdtemplate)
+	var markdownTemplate string
+	if len(testSuiteDiff) > 20 {
+		markdownTemplate = longTestSuiteTemplatePrefix + testSuiteTemplate + longTestSuiteTemplateSuffix + testCaseTemplate
+	} else {
+		markdownTemplate = testSuiteTemplate + testCaseTemplate
+	}
+
+	tmpl, err := template.New("md").Parse(markdownTemplate)
 	checkError(err)
 	outputFile, err := os.Create(fileOut)
 	checkError(err)
@@ -277,20 +284,31 @@ func compareXMLReports(fileOld, fileNew, fileOut string) {
 	checkError(err)
 }
 
-const mdtemplate = `
+const longTestSuiteTemplatePrefix = `
+<details>
+  <summary><b>Test suite performance difference</b></summary>
+`
+
+const longTestSuiteTemplateSuffix = `
+</details>
+`
+
+const testSuiteTemplate = `
 | Test Suite | $Status$ | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
 |:----:|:----:|:----:|:-----:|:-------:|:--------:|:------:|
 {{- range $key, $value := .SuiteDiff }}
-| ${{ $key }}$ | $ {{ .SuiteStatus }}$ | ${{ .TimeDiff }}$ | ${{ .TestsDiff }}$ | ${{ .SkippedDiff }}$ | ${{ .FailuresDiff }}$ | ${{ .ErrorsDiff }}$ |
+| {{ $key }} | {{ .SuiteStatus }} | ${{ .TimeDiff }}$ | ${{ .TestsDiff }}$ | ${{ .SkippedDiff }}$ | ${{ .FailuresDiff }}$ | ${{ .ErrorsDiff }}$ |
 {{- end}}
+`
 
+const testCaseTemplate = `
 <details>
   <summary><b>Additional test case details</b></summary>
 
-| Test Case | $Status$ | $±Time$ | Test Suite |
-|:----:|:----:|:----:|:----:|
+| Test Suite | $Status$ | $±Time$ | Test Case |
+|:----:|:----:|:----:|:-----|
 {{- range $key, $value := .CaseDiff }}
-| {{ .TestCaseName }} | $ {{ .TestCaseStatus }}$ | ${{ .TimeDiff }}$ | {{ .SuiteName }} |
+| {{ .SuiteName }} | {{ .TestCaseStatus }} | ${{ .TimeDiff }}$ | {{ .TestCaseName }} |
 {{- end}}
 </details>
 `
