@@ -281,7 +281,7 @@ const mdtemplate = `
 | Test Suite | $Status$ | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
 |:----:|:----:|:----:|:-----:|:-------:|:--------:|:------:|
 {{- range $key, $value := .SuiteDiff }}
-| ${{ $key }}$ | ${{ .SuiteStatus }}$ | ${{ .TimeDiff }}$ | ${{ .TestsDiff }}$ | ${{ .SkippedDiff }}$ | ${{ .FailuresDiff }}$ | ${{ .ErrorsDiff }}$ |
+| ${{ $key }}$ | $ {{ .SuiteStatus }}$ | ${{ .TimeDiff }}$ | ${{ .TestsDiff }}$ | ${{ .SkippedDiff }}$ | ${{ .FailuresDiff }}$ | ${{ .ErrorsDiff }}$ |
 {{- end}}
 
 <details>
@@ -290,7 +290,7 @@ const mdtemplate = `
 | Test Case | $Status$ | $±Time$ | Test Suite |
 |:----:|:----:|:----:|:----:|
 {{- range $key, $value := .CaseDiff }}
-| {{ .TestCaseName }} | ${{ .TestCaseStatus }}$ | ${{ .TimeDiff }}$ | {{ .SuiteName }} |
+| {{ .TestCaseName }} | $ {{ .TestCaseStatus }}$ | ${{ .TimeDiff }}$ | {{ .SuiteName }} |
 {{- end}}
 </details>
 `
