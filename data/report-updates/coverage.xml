@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage line-rate="0.95454544" branch-rate="0" version="" timestamp="1675165531837" lines-covered="189" lines-valid="198" branches-covered="0" branches-valid="0" complexity="0">
+<coverage line-rate="0.95454544" branch-rate="0" version="" timestamp="1675166102338" lines-covered="189" lines-valid="198" branches-covered="0" branches-valid="0" complexity="0">
   <sources>
     <source>/home/runner/work/junit-xml-diff/junit-xml-diff</source>
   </sources>
