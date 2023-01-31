@@ -287,7 +287,7 @@ const mdtemplate = `
 |Test Case|Status|±Time|Test Suite|
 |----|----|----|----|
 {{- range $key, $value := .CaseDiff }}
-|{{ .SuiteName }}|{{ .TestCaseName }}|{{ .TestCaseStatus }}|{{ .TimeDiff }}|
+|{{ .TestCaseName }}|{{ .TestCaseStatus }}|{{ .TimeDiff }}|{{ .SuiteName }}|
 {{- end}}
 </details>
 `
