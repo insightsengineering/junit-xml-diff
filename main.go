@@ -93,8 +93,8 @@ func getTestCases(testSuiteXML TestSuitesXML) map[string]TestCaseTime {
 			testCaseTime, err := strconv.ParseFloat(testCase.Time, 32)
 			checkError(err)
 			testCaseID := testSuiteName + ":" + testCase.ClassName + ":" + testCase.Name
-			// It may happen that there are multiple test cases with the same class name and name inside a test suite.
-			// In that case, times of such cases are added to each other.
+			// It may happen that there are multiple test cases with the same class name and test case name inside a test suite.
+			// Times of such cases are added to each other.
 			testCaseTimeEntry, ok := testCaseTimes[testCaseID]
 			if ok {
 				testCaseTimeEntry.Time += float32(testCaseTime)
@@ -242,34 +242,10 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 	return testSuiteDiff
 }
 
-const mdtemplate = `
-|Test suite|Status|±Time|±Tests|±Skipped|±Failures|±Errors|
-|----|----|----|-----|-------|--------|------|
-{{- range $key, $value := .SuiteDiff }}
-|{{ $key }}|{{ .SuiteStatus }}|{{ .TimeDiff }}|{{ .TestsDiff }}|{{ .SkippedDiff }}|{{ .FailuresDiff }}|{{ .ErrorsDiff }}|
-{{- end}}
-
-<details>
-  <summary>Additional test case details</summary>
-
-|Test suite|Test case|Status|±Time|
-|----|----|----|----|
-{{- range $key, $value := .CaseDiff }}
-|{{ .SuiteName }}|{{ .TestCaseName }}|{{ .TestCaseStatus }}|{{ .TimeDiff }}|
-{{- end}}
-</details>
-`
-
-// TODO is class name relevant? It is mostly the same as test suite name
-
-func main() {
-	if len(os.Args) < 3 {
-		fmt.Printf("Usage: %s <old-xml-file-name> <new-xml-file-name>\n", os.Args[0])
-		os.Exit(1)
-	}
-	xmlFileOld, err := os.Open(os.Args[1])
+func compareXMLReports(fileOld, fileNew string) {
+	xmlFileOld, err := os.Open(fileOld)
 	checkError(err)
-	xmlFileNew, err := os.Open(os.Args[2])
+	xmlFileNew, err := os.Open(fileNew)
 	checkError(err)
 	defer xmlFileOld.Close()
 	defer xmlFileNew.Close()
@@ -296,4 +272,30 @@ func main() {
 	checkError(err)
 	err = tmpl.Execute(os.Stdout, testReport)
 	checkError(err)
+}
+
+const mdtemplate = `
+|Test Suite|Status|±Time|±Tests|±Skipped|±Failures|±Errors|
+|----|----|----|-----|-------|--------|------|
+{{- range $key, $value := .SuiteDiff }}
+|{{ $key }}|{{ .SuiteStatus }}|{{ .TimeDiff }}|{{ .TestsDiff }}|{{ .SkippedDiff }}|{{ .FailuresDiff }}|{{ .ErrorsDiff }}|
+{{- end}}
+
+<details>
+  <summary><b>Additional test case details</b></summary>
+
+|Test Case|Status|±Time|Test Suite|
+|----|----|----|----|
+{{- range $key, $value := .CaseDiff }}
+|{{ .SuiteName }}|{{ .TestCaseName }}|{{ .TestCaseStatus }}|{{ .TimeDiff }}|
+{{- end}}
+</details>
+`
+
+func main() {
+	if len(os.Args) < 3 {
+		fmt.Printf("Usage: %s <old-xml-file-name> <new-xml-file-name>\n", os.Args[0])
+		os.Exit(1)
+	}
+	compareXMLReports(os.Args[1], os.Args[2])
 }
