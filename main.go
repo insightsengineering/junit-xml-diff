@@ -278,19 +278,19 @@ func compareXMLReports(fileOld, fileNew, fileOut string) {
 }
 
 const mdtemplate = `
-|Test Suite|Status|±Time|±Tests|±Skipped|±Failures|±Errors|
-|----|----|----|-----|-------|--------|------|
+| Test Suite | $Status$ | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
+|:----:|:----:|:----:|:-----:|:-------:|:--------:|:------:|
 {{- range $key, $value := .SuiteDiff }}
-|{{ $key }}|{{ .SuiteStatus }}|{{ .TimeDiff }}|{{ .TestsDiff }}|{{ .SkippedDiff }}|{{ .FailuresDiff }}|{{ .ErrorsDiff }}|
+| ${{ $key }}$ | ${{ .SuiteStatus }}$ | ${{ .TimeDiff }}$ | ${{ .TestsDiff }}$ | ${{ .SkippedDiff }}$ | ${{ .FailuresDiff }}$ | ${{ .ErrorsDiff }}$ |
 {{- end}}
 
 <details>
   <summary><b>Additional test case details</b></summary>
 
-|Test Case|Status|±Time|Test Suite|
-|----|----|----|----|
+| Test Case | $Status$ | $±Time$ | Test Suite |
+|:----:|:----:|:----:|:----:|
 {{- range $key, $value := .CaseDiff }}
-|{{ .TestCaseName }}|{{ .TestCaseStatus }}|{{ .TimeDiff }}|{{ .SuiteName }}|
+| {{ .TestCaseName }} | ${{ .TestCaseStatus }}$ | ${{ .TimeDiff }}$ | {{ .SuiteName }} |
 {{- end}}
 </details>
 `
