@@ -41,5 +41,6 @@ func Test_compareXMLReports(t *testing.T) {
 	checkError(err)
 	compareXMLReports("testdata/old.xml", "testdata/new.xml", "testdata/out.md")
 	outputBytes, err := os.ReadFile("testdata/out.md")
+	checkError(err)
 	assert.Equal(t, string(outputBytes), expectedResult)
 }
