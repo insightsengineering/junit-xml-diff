@@ -186,7 +186,7 @@ func compareTestCases(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) ma
 			// Test case exists only in old XML.
 			testCaseTimeDiff[k] = TestCaseDiff{
 				"💀",
-				formatFloat(-1 * testCaseTimesOld[k].Time, true, false),
+				formatFloat(-1*testCaseTimesOld[k].Time, true, false),
 				testCaseTimesOld[k].TestCaseName,
 				testCaseTimesOld[k].ClassName,
 				testCaseTimesOld[k].SuiteName,
