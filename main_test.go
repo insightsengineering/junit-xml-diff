@@ -8,7 +8,9 @@ import (
 )
 
 const expectedResult = `
-| Test Suite | $Status$ | Time for ` + "`" + `main` + "`" + ` | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
+## Unit Test Performance Difference
+
+| Test Suite | $Status$ | Time on ` + "`" + `main` + "`" + ` | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
 |:-----|:----:|:----:|:-----:|:-------:|:--------:|:------:|:------:|
 | testsuite1 | 💔 | $1.25$ | $+1.30$ | $+2$ | $+2$ | $0$ | $-2$ |
 | testsuite3 | 💀 | $3.25$ | $-3.25$ | $-4$ | $0$ | $-3$ | $0$ |
@@ -17,7 +19,7 @@ const expectedResult = `
 <details>
   <summary><b>Additional test case details</b></summary>
 
-| Test Suite | $Status$ | Time for ` + "`" + `main` + "`" + ` | $±Time$ | Test Case |
+| Test Suite | $Status$ | Time on ` + "`" + `main` + "`" + ` | $±Time$ | Test Case |
 |:-----|:----:|:----:|:----:|:-----|
 | testsuite1 | 💔 | $1.21$ | $+5.96$ | testcase1 |
 | testsuite1 | 👶 |  | $+0.55$ | testcase3a |

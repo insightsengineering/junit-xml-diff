@@ -305,9 +305,10 @@ func compareXMLReports(fileOld, fileNew, fileOut, branch string) {
 	var markdownTemplate string
 	if len(testSuiteDiff) > 20 {
 		// If there are more than 20 test suites, markdown table with test suites should be collapsible.
-		markdownTemplate = longTestSuiteTemplatePrefix + testSuiteTemplate + longTestSuiteTemplateSuffix + testCaseTemplate
+		markdownTemplate = templateHeader + longTestSuiteTemplatePrefix + testSuiteTemplate +
+			longTestSuiteTemplateSuffix + testCaseTemplate
 	} else {
-		markdownTemplate = testSuiteTemplate + testCaseTemplate
+		markdownTemplate = templateHeader + testSuiteTemplate + testCaseTemplate
 	}
 
 	tmpl, err := template.New("md").Parse(markdownTemplate)
@@ -319,6 +320,10 @@ func compareXMLReports(fileOld, fileNew, fileOut, branch string) {
 	checkError(err)
 }
 
+const templateHeader = `
+## Unit Test Performance Difference
+`
+
 const longTestSuiteTemplatePrefix = `
 <details>
   <summary><b>Test suite performance difference</b></summary>
@@ -329,7 +334,7 @@ const longTestSuiteTemplateSuffix = `
 `
 
 const testSuiteTemplate = `
-| Test Suite | $Status$ | Time for ` + "`" + `{{ .DiffBranch }}` + "`" + ` | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
+| Test Suite | $Status$ | Time on ` + "`" + `{{ .DiffBranch }}` + "`" + ` | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
 |:-----|:----:|:----:|:-----:|:-------:|:--------:|:------:|:------:|
 {{- range $key, $value := .SuiteDiff }}
 | {{ $key }} | {{ .SuiteStatus }} | {{ .TimeDiffBranch }} | {{ .TimeDiff }} | ${{ .TestsDiff }}$ | ${{ .SkippedDiff }}$ | ${{ .FailuresDiff }}$ | ${{ .ErrorsDiff }}$ |
@@ -340,7 +345,7 @@ const testCaseTemplate = `
 <details>
   <summary><b>Additional test case details</b></summary>
 
-| Test Suite | $Status$ | Time for ` + "`" + `{{ .DiffBranch }}` + "`" + ` | $±Time$ | Test Case |
+| Test Suite | $Status$ | Time on ` + "`" + `{{ .DiffBranch }}` + "`" + ` | $±Time$ | Test Case |
 |:-----|:----:|:----:|:----:|:-----|
 {{- range $key, $value := .CaseDiff }}
 | {{ .SuiteName }} | {{ .TestCaseStatus }} | {{ .TimeDiffBranch }} | {{ .TimeDiff }} | {{ .TestCaseName }} |
