@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage line-rate="0.90128756" branch-rate="0" version="" timestamp="1675185444538" lines-covered="210" lines-valid="233" branches-covered="0" branches-valid="0" complexity="0">
+<coverage line-rate="0.90128756" branch-rate="0" version="" timestamp="1675245288650" lines-covered="210" lines-valid="233" branches-covered="0" branches-valid="0" complexity="0">
   <sources>
     <source>/home/runner/work/junit-xml-diff/junit-xml-diff</source>
   </sources>
@@ -67,14 +67,14 @@
             <method name="formatFloat" signature="" line-rate="1" branch-rate="0" complexity="0">
               <lines>
                 <line number="123" hits="29"></line>
-                <line number="124" hits="4"></line>
-                <line number="125" hits="4"></line>
-                <line number="126" hits="4"></line>
-                <line number="127" hits="25"></line>
-                <line number="128" hits="11"></line>
-                <line number="129" hits="11"></line>
-                <line number="130" hits="11"></line>
-                <line number="131" hits="25"></line>
+                <line number="124" hits="3"></line>
+                <line number="125" hits="3"></line>
+                <line number="126" hits="3"></line>
+                <line number="127" hits="26"></line>
+                <line number="128" hits="12"></line>
+                <line number="129" hits="12"></line>
+                <line number="130" hits="12"></line>
+                <line number="131" hits="26"></line>
               </lines>
             </method>
             <method name="getDiffEmoji" signature="" line-rate="1" branch-rate="0" complexity="0">
@@ -328,14 +328,14 @@
             <line number="117" hits="18"></line>
             <line number="120" hits="2"></line>
             <line number="123" hits="29"></line>
-            <line number="124" hits="4"></line>
-            <line number="125" hits="4"></line>
-            <line number="126" hits="4"></line>
-            <line number="127" hits="25"></line>
-            <line number="128" hits="11"></line>
-            <line number="129" hits="11"></line>
-            <line number="130" hits="11"></line>
-            <line number="131" hits="25"></line>
+            <line number="124" hits="3"></line>
+            <line number="125" hits="3"></line>
+            <line number="126" hits="3"></line>
+            <line number="127" hits="26"></line>
+            <line number="128" hits="12"></line>
+            <line number="129" hits="12"></line>
+            <line number="130" hits="12"></line>
+            <line number="131" hits="26"></line>
             <line number="134" hits="7"></line>
             <line number="135" hits="3"></line>
             <line number="136" hits="3"></line>
