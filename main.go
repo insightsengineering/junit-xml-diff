@@ -128,7 +128,7 @@ func formatFloat(number float32, addPlusSign bool, roundToThreshold bool) string
 	if number > 0 && addPlusSign {
 		plusSign = "+"
 	}
-	return fmt.Sprintf("$%s%.3f$", plusSign, number)
+	return fmt.Sprintf("$%s%.2f$", plusSign, number)
 }
 
 func getDiffEmoji(formattedTime string) string {
@@ -186,7 +186,7 @@ func compareTestCases(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) ma
 			// Test case exists only in old XML.
 			testCaseTimeDiff[k] = TestCaseDiff{
 				"💀",
-				formatFloat(testCaseTimesOld[k].Time, true, false),
+				formatFloat(-1 * testCaseTimesOld[k].Time, true, false),
 				testCaseTimesOld[k].TestCaseName,
 				testCaseTimesOld[k].ClassName,
 				testCaseTimesOld[k].SuiteName,
