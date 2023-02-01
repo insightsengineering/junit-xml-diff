@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="testsuite1" timestamp="2023-01-19T16:20:10Z" hostname="e3ab08c8a5fd" tests="6" skipped="2" failures="0" errors="0" time="2.55">
+    <testcase time="1.85" classname="testsuite1" name="testcase1"/>
+    <testcase time="5.32" classname="testsuite1" name="testcase1"/>
+    <testcase time="0.32" classname="testsuite1" name="testcase2"/>
+    <testcase time="0.55" classname="testsuite1" name="testcase3"/>
+    <testcase time="0.55" classname="testsuite1" name="testcase3a"/>
+    <testcase time="0.55" classname="testsuite1" name="testcase3b"/>
+  </testsuite>
+  <testsuite name="testsuite2" timestamp="2023-01-19T16:20:10Z" hostname="e3ab08c8a5fd" tests="3" skipped="2" failures="1" errors="0" time="2.25">
+    <testcase time="0.05" classname="testsuite2" name="testcase4"/>
+    <testcase time="2.05" classname="testsuite2" name="testcase5"/>
+    <testcase time="0.05" classname="testsuite2" name="testcase5"/>
+  </testsuite>
+  <testsuite name="testsuite5" timestamp="2023-01-19T16:20:10Z" hostname="e3ab08c8a5fd" tests="3" skipped="0" failures="0" errors="1" time="7.158">
+    <testcase time="1.15" classname="testsuite5" name="testcase400"/>
+    <testcase time="2.05" classname="testsuite5" name="testcase500"/>
+    <testcase time="3.061" classname="testsuite5" name="testcase500"/>
+  </testsuite>
+</testsuites>
