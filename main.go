@@ -171,7 +171,7 @@ func compareTestCases(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) ma
 			// Test case exists only in new XML.
 			testCaseTimeDiff[k] = TestCaseDiff{
 				"👶",
-				formatFloat(testCaseTimesNew[k].Time, true, true),
+				formatFloat(testCaseTimesNew[k].Time, true, false),
 				testCaseTimesNew[k].TestCaseName,
 				testCaseTimesNew[k].ClassName,
 				testCaseTimesNew[k].SuiteName,
@@ -186,7 +186,7 @@ func compareTestCases(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) ma
 			// Test case exists only in old XML.
 			testCaseTimeDiff[k] = TestCaseDiff{
 				"💀",
-				formatFloat(testCaseTimesOld[k].Time, true, true),
+				formatFloat(testCaseTimesOld[k].Time, true, false),
 				testCaseTimesOld[k].TestCaseName,
 				testCaseTimesOld[k].ClassName,
 				testCaseTimesOld[k].SuiteName,
@@ -238,7 +238,7 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 			// Test suite name exists only in new XML.
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
 				"👶",
-				formatFloat(float32(newTimeFloat), true, true),
+				formatFloat(float32(newTimeFloat), true, false),
 				formatInt(newTests),
 				formatInt(newSkipped),
 				formatInt(newFailures),
@@ -257,7 +257,7 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 			// Test suite name exists only in old XML.
 			testSuiteDiff[testSuiteName] = TestSuiteDiff{
 				"💀",
-				formatFloat(-1*float32(oldTimeFloat), true, true),
+				formatFloat(-1*float32(oldTimeFloat), true, false),
 				formatInt(-1 * testSuiteTestsOld[testSuiteName]),
 				formatInt(-1 * testSuiteSkippedOld[testSuiteName]),
 				formatInt(-1 * testSuiteFailuresOld[testSuiteName]),
@@ -343,7 +343,7 @@ const testCaseTemplate = `
 `
 
 func main() {
-	if len(os.Args) < 3 {
+	if len(os.Args) < 7 {
 		// <branch-name-for-old-xml> is typically main
 		// if time difference is between 0 and <positive-threshold> it's treated as 0
 		// if time difference is between <negative-threshold> and 0 it's treated as 0

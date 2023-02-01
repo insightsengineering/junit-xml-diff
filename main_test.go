@@ -27,7 +27,7 @@ const expectedResult = `
 | testsuite1 | 👶 |  | $+0.550$ | testcase3b |
 | testsuite2 | 💚 | $5.150$ | $-5.100$ | testcase4 |
 | testsuite2 | 💔 | $0.100$ | $+2.000$ | testcase5 |
-| testsuite2 | 💀 | $0.080$ |  | testcase6 |
+| testsuite2 | 💀 | $0.080$ | $+0.080$ | testcase6 |
 | testsuite3 | 💀 | $0.250$ | $+0.250$ | testcase40 |
 | testsuite3 | 💀 | $0.800$ | $+0.800$ | testcase50 |
 | testsuite3 | 💀 | $0.580$ | $+0.580$ | testcase60 |
