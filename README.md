@@ -17,6 +17,8 @@ You may download the binary for your OS/distribution from [https://github.com/in
 ```bash
 # Assuming you're in the directory which contains the binary
 ./junit-xml-diff <old.xml> <new.xml> <output.md> <branch-name-corresponding-to-old-xml> <positive-threshold> <negative-threshold>
+# For help, run:
+./junit-xml-diff
 ```
 
 ### Container

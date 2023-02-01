@@ -344,10 +344,10 @@ const testCaseTemplate = `
 
 func main() {
 	if len(os.Args) < 7 {
-		// <branch-name-for-old-xml> is typically main
-		// if time difference is between 0 and <positive-threshold> it's treated as 0
-		// if time difference is between <negative-threshold> and 0 it's treated as 0
 		fmt.Printf("Usage: %s <old-xml-file-name> <new-xml-file-name> <output-file-name> <branch-name-for-old-xml> <positive-threshold> <negative-threshold>\n", os.Args[0])
+		fmt.Println("<branch-name-for-old-xml> is typically main, or other branch from which the new-xml report is compared with.")
+		fmt.Println("If time difference is between 0 and <positive-threshold> seconds it's treated as 0 seconds.")
+		fmt.Println("If time difference is between <negative-threshold> and 0 seconds it's treated as 0 seconds.")
 		os.Exit(1)
 	}
 
