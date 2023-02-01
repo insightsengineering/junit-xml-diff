@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage line-rate="0.8995816" branch-rate="0" version="" timestamp="1675257983990" lines-covered="215" lines-valid="239" branches-covered="0" branches-valid="0" complexity="0">
+<coverage line-rate="0.8958333" branch-rate="0" version="" timestamp="1675259050440" lines-covered="215" lines-valid="240" branches-covered="0" branches-valid="0" complexity="0">
   <sources>
     <source>/home/runner/work/junit-xml-diff/junit-xml-diff</source>
   </sources>
   <packages>
-    <package name="github.com/insightsengineering/junit-xml-diff" line-rate="0.8995816" branch-rate="0" complexity="0">
+    <package name="github.com/insightsengineering/junit-xml-diff" line-rate="0.8958333" branch-rate="0" complexity="0">
       <classes>
-        <class name="-" filename="main.go" line-rate="0.8995816" branch-rate="0" complexity="0">
+        <class name="-" filename="main.go" line-rate="0.8958333" branch-rate="0" complexity="0">
           <methods>
             <method name="checkError" signature="" line-rate="0.25" branch-rate="0" complexity="0">
               <lines>
@@ -223,7 +223,7 @@
                 <line number="275" hits="1"></line>
               </lines>
             </method>
-            <method name="compareXMLReports" signature="" line-rate="0.902439" branch-rate="0" complexity="0">
+            <method name="compareXMLReports" signature="" line-rate="0.88095236" branch-rate="0" complexity="0">
               <lines>
                 <line number="278" hits="1"></line>
                 <line number="279" hits="1"></line>
@@ -257,35 +257,36 @@
                 <line number="307" hits="0"></line>
                 <line number="308" hits="0"></line>
                 <line number="309" hits="0"></line>
-                <line number="310" hits="1"></line>
+                <line number="310" hits="0"></line>
                 <line number="311" hits="1"></line>
-                <line number="313" hits="1"></line>
+                <line number="312" hits="1"></line>
                 <line number="314" hits="1"></line>
                 <line number="315" hits="1"></line>
                 <line number="316" hits="1"></line>
                 <line number="317" hits="1"></line>
                 <line number="318" hits="1"></line>
                 <line number="319" hits="1"></line>
+                <line number="320" hits="1"></line>
               </lines>
             </method>
             <method name="main" signature="" line-rate="0" branch-rate="0" complexity="0">
               <lines>
-                <line number="351" hits="0"></line>
-                <line number="352" hits="0"></line>
-                <line number="353" hits="0"></line>
-                <line number="354" hits="0"></line>
-                <line number="355" hits="0"></line>
                 <line number="356" hits="0"></line>
                 <line number="357" hits="0"></line>
                 <line number="358" hits="0"></line>
+                <line number="359" hits="0"></line>
                 <line number="360" hits="0"></line>
                 <line number="361" hits="0"></line>
                 <line number="362" hits="0"></line>
                 <line number="363" hits="0"></line>
-                <line number="364" hits="0"></line>
                 <line number="365" hits="0"></line>
                 <line number="366" hits="0"></line>
                 <line number="367" hits="0"></line>
+                <line number="368" hits="0"></line>
+                <line number="369" hits="0"></line>
+                <line number="370" hits="0"></line>
+                <line number="371" hits="0"></line>
+                <line number="372" hits="0"></line>
               </lines>
             </method>
           </methods>
@@ -504,31 +505,32 @@
             <line number="307" hits="0"></line>
             <line number="308" hits="0"></line>
             <line number="309" hits="0"></line>
-            <line number="310" hits="1"></line>
+            <line number="310" hits="0"></line>
             <line number="311" hits="1"></line>
-            <line number="313" hits="1"></line>
+            <line number="312" hits="1"></line>
             <line number="314" hits="1"></line>
             <line number="315" hits="1"></line>
             <line number="316" hits="1"></line>
             <line number="317" hits="1"></line>
             <line number="318" hits="1"></line>
             <line number="319" hits="1"></line>
-            <line number="351" hits="0"></line>
-            <line number="352" hits="0"></line>
-            <line number="353" hits="0"></line>
-            <line number="354" hits="0"></line>
-            <line number="355" hits="0"></line>
+            <line number="320" hits="1"></line>
             <line number="356" hits="0"></line>
             <line number="357" hits="0"></line>
             <line number="358" hits="0"></line>
+            <line number="359" hits="0"></line>
             <line number="360" hits="0"></line>
             <line number="361" hits="0"></line>
             <line number="362" hits="0"></line>
             <line number="363" hits="0"></line>
-            <line number="364" hits="0"></line>
             <line number="365" hits="0"></line>
             <line number="366" hits="0"></line>
             <line number="367" hits="0"></line>
+            <line number="368" hits="0"></line>
+            <line number="369" hits="0"></line>
+            <line number="370" hits="0"></line>
+            <line number="371" hits="0"></line>
+            <line number="372" hits="0"></line>
           </lines>
         </class>
       </classes>
