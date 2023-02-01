@@ -11,7 +11,6 @@ const expectedResult = `
 | Test Suite | $Status$ | Time for ` + "`" + `main` + "`" + ` | $±Time$ | $±Tests$ | $±Skipped$ | $±Failures$ | $±Errors$ |
 |:-----|:----:|:----:|:-----:|:-------:|:--------:|:------:|:------:|
 | testsuite1 | 💔 | $1.25$ | $+1.30$ | $+2$ | $+2$ | $0$ | $-2$ |
-| testsuite2 |  | $2.25$ |  | $-1$ | $+2$ | $-2$ | $0$ |
 | testsuite3 | 💀 | $3.25$ | $-3.25$ | $-4$ | $0$ | $-3$ | $0$ |
 | testsuite5 | 👶 |  | $+7.16$ | $+3$ | $0$ | $0$ | $+1$ |
 
@@ -21,8 +20,6 @@ const expectedResult = `
 | Test Suite | $Status$ | Time for ` + "`" + `main` + "`" + ` | $±Time$ | Test Case |
 |:-----|:----:|:----:|:----:|:-----|
 | testsuite1 | 💔 | $1.21$ | $+5.96$ | testcase1 |
-| testsuite1 |  | $0.32$ |  | testcase2 |
-| testsuite1 |  | $0.55$ |  | testcase3 |
 | testsuite1 | 👶 |  | $+0.55$ | testcase3a |
 | testsuite1 | 👶 |  | $+0.55$ | testcase3b |
 | testsuite2 | 💚 | $5.15$ | $-5.10$ | testcase4 |

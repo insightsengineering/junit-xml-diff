@@ -159,13 +159,16 @@ func compareTestCases(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) ma
 		if ok {
 			// Test case exists both in old and new XML.
 			formattedTimeDiff := formatFloat(testCaseTimesNew[k].Time-testCaseTimesOld[k].Time, true, true)
-			testCaseTimeDiff[k] = TestCaseDiff{
-				getDiffEmoji(formattedTimeDiff),
-				formattedTimeDiff,
-				testCaseTimesNew[k].TestCaseName,
-				testCaseTimesNew[k].ClassName,
-				testCaseTimesNew[k].SuiteName,
-				formatFloat(testCaseTimesOld[k].Time, false, false),
+			if formattedTimeDiff != "" {
+				// Add a row to markdown table only if time difference is significant.
+				testCaseTimeDiff[k] = TestCaseDiff{
+					getDiffEmoji(formattedTimeDiff),
+					formattedTimeDiff,
+					testCaseTimesNew[k].TestCaseName,
+					testCaseTimesNew[k].ClassName,
+					testCaseTimesNew[k].SuiteName,
+					formatFloat(testCaseTimesOld[k].Time, false, false),
+				}
 			}
 		} else {
 			// Test case exists only in new XML.
@@ -225,14 +228,17 @@ func compareTestSuites(testSuiteOld TestSuitesXML, testSuiteNew TestSuitesXML) m
 			oldTimeFloat, err := strconv.ParseFloat(oldTime, 32)
 			checkError(err)
 			formattedTimeDiff := formatFloat(float32(newTimeFloat-oldTimeFloat), true, true)
-			testSuiteDiff[testSuiteName] = TestSuiteDiff{
-				getDiffEmoji(formattedTimeDiff),
-				formattedTimeDiff,
-				formatInt(newTests - testSuiteTestsOld[testSuiteName]),
-				formatInt(newSkipped - testSuiteSkippedOld[testSuiteName]),
-				formatInt(newFailures - testSuiteFailuresOld[testSuiteName]),
-				formatInt(newErrors - testSuiteErrorsOld[testSuiteName]),
-				formatFloat(float32(oldTimeFloat), false, false),
+			if formattedTimeDiff != "" {
+				// Add a row to markdown table only if time difference is significant.
+				testSuiteDiff[testSuiteName] = TestSuiteDiff{
+					getDiffEmoji(formattedTimeDiff),
+					formattedTimeDiff,
+					formatInt(newTests - testSuiteTestsOld[testSuiteName]),
+					formatInt(newSkipped - testSuiteSkippedOld[testSuiteName]),
+					formatInt(newFailures - testSuiteFailuresOld[testSuiteName]),
+					formatInt(newErrors - testSuiteErrorsOld[testSuiteName]),
+					formatFloat(float32(oldTimeFloat), false, false),
+				}
 			}
 		} else {
 			// Test suite name exists only in new XML.
