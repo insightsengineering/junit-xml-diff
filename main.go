@@ -315,8 +315,8 @@ func compareXMLReports(fileOld, fileNew, fileOut, branch string) {
 	checkError(err)
 	defer outputFile.Close()
 
-	// Only write the markdown table if there are any test suites in the repository.
-	if len(testSuiteDiff) > 0 {
+	// Only write the markdown table if there are any test suites or test cases in the repository.
+	if len(testSuiteDiff) > 0 || len(testCasesDiff) > 0 {
 		tmpl, err := template.New("md").Parse(markdownTemplate)
 		checkError(err)
 		err = tmpl.Execute(outputFile, testReport)
