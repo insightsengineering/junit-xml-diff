@@ -302,22 +302,34 @@ func compareXMLReports(fileOld, fileNew, fileOut, branch string) {
 	testReport.CaseDiff = testCasesDiff
 	testReport.DiffBranch = branch
 
-	var markdownTemplate string
-	if len(testSuiteDiff) > 20 {
-		// If there are more than 20 test suites, markdown table with test suites should be collapsible.
-		markdownTemplate = templateHeader + longTestSuiteTemplatePrefix + testSuiteTemplate +
-			longTestSuiteTemplateSuffix + testCaseTemplate
-	} else {
-		markdownTemplate = templateHeader + testSuiteTemplate + testCaseTemplate
-	}
-
-	tmpl, err := template.New("md").Parse(markdownTemplate)
-	checkError(err)
 	outputFile, err := os.Create(fileOut)
 	checkError(err)
 	defer outputFile.Close()
-	err = tmpl.Execute(outputFile, testReport)
-	checkError(err)
+
+	var markdownTemplate string
+	switch {
+	// If there are more than 20 test suites, markdown table with test suites should be collapsible.
+	case len(testSuiteDiff) > 20 && len(testCasesDiff) > 0:
+		markdownTemplate = templateHeader + longTestSuiteTemplatePrefix + testSuiteTemplate +
+			longTestSuiteTemplateSuffix + testCaseTemplate
+	case len(testSuiteDiff) > 20 && len(testCasesDiff) == 0:
+		markdownTemplate = templateHeader + longTestSuiteTemplatePrefix + testSuiteTemplate +
+			longTestSuiteTemplateSuffix
+	case len(testSuiteDiff) > 0 && len(testCasesDiff) > 0:
+		markdownTemplate = templateHeader + testSuiteTemplate + testCaseTemplate
+	case len(testSuiteDiff) > 0 && len(testCasesDiff) == 0:
+		markdownTemplate = templateHeader + testSuiteTemplate
+	case len(testSuiteDiff) == 0 && len(testCasesDiff) > 0:
+		markdownTemplate = templateHeader + testCaseTemplate
+	}
+
+	// Only write the markdown table if there are any differences between test suites or test cases.
+	if len(testSuiteDiff) > 0 || len(testCasesDiff) > 0 {
+		tmpl, err := template.New("md").Parse(markdownTemplate)
+		checkError(err)
+		err = tmpl.Execute(outputFile, testReport)
+		checkError(err)
+	}
 }
 
 const templateHeader = `
