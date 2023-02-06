@@ -311,13 +311,17 @@ func compareXMLReports(fileOld, fileNew, fileOut, branch string) {
 		markdownTemplate = templateHeader + testSuiteTemplate + testCaseTemplate
 	}
 
-	tmpl, err := template.New("md").Parse(markdownTemplate)
-	checkError(err)
 	outputFile, err := os.Create(fileOut)
 	checkError(err)
 	defer outputFile.Close()
-	err = tmpl.Execute(outputFile, testReport)
-	checkError(err)
+
+	// Only write the markdown table if there are any test suites in the repository.
+	if len(testSuiteDiff) > 0 {
+		tmpl, err := template.New("md").Parse(markdownTemplate)
+		checkError(err)
+		err = tmpl.Execute(outputFile, testReport)
+		checkError(err)
+	}
 }
 
 const templateHeader = `
