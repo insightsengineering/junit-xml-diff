@@ -77,3 +77,7 @@ testrun: build ## Run against renv.lock file
 types: ## Examine Go types and their transitive dependencies
 	@printf "Executing target: [$@] 🎯\n"
 	@typex -t -u .
+
+update: ## Update all dependencies
+	@printf "Executing target: [$@] 🎯\n"
+	@go get -u all
